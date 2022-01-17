@@ -17,9 +17,6 @@ const Home = () => {
               <th className=" p-3 text-base font-semibold tracking-wide text-left">
                 Name
               </th>
-              {/* <th className=" p-3 text-base font-semibold tracking-wide text-left">
-                Courses
-              </th> */}
               <th className=" p-3 text-base font-semibold tracking-wide text-left">
                 Gender
               </th>
@@ -39,12 +36,6 @@ const Home = () => {
               <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                 Student 1
               </td>
-              {/* <td
-                onClick={() => setshowDialog(!showDialog)}
-                className="p-3 text-base text-gray-700 whitespace-nowrap"
-              >
-                Java, Python, Javascript
-              </td> */}
               <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                 Male
               </td>
@@ -64,9 +55,6 @@ const Home = () => {
               <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                 Student 2
               </td>
-              {/* <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Solidity, Mathematics
-              </td> */}
               <td className="p-3 text-base text-gray-700 whitespace-nowrap">
                 Male
               </td>
