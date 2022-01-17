@@ -1,11 +1,9 @@
-import Home from "./Components/Home/Home";
-import Topbar from "./Components/Topbar/Topbar";
+import Homepage from "./Pages/Homepage";
 
 function App() {
   return (
     <>
-      <Topbar />
-      <Home />
+      <Homepage />
     </>
   );
 }
