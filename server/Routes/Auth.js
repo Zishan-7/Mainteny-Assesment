@@ -1,7 +1,7 @@
 const router = require("express").Router();
+const controller = require("../Controller");
 
-router.get("/", (req, res) => {
-  res.status(200).send({ msg: "working" });
-});
+router.post("/register", controller.Auth.register);
+router.post("/login", controller.Auth.login);
 
 module.exports = router;

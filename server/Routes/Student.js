@@ -1,9 +1,6 @@
 const router = require("express").Router();
 const controller = require("../Controller");
-
-router.get("/", (req, res) => {
-  res.status(200).send({ msg: "working" });
-});
+const auth = require("../Middleware/Auth");
 
 router.post("/addStudent", controller.Student.addStudent);
 router.get("/getAllStudents", controller.Student.getAllStudents);
