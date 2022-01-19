@@ -1,10 +1,37 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Dialog from "../Dialog/Dialog";
 
 const Home = () => {
+  useEffect(() => {
+    getStudents();
+  }, []);
   const [showDialog, setshowDialog] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [studentIndex, setStudentIndex] = useState(0);
 
-  const toggleShow = () => {
+  const navigate = useNavigate();
+
+  const getStudents = async () => {
+    const response = await axios.get("/api/v1/student/getAllStudents", {
+      headers: {
+        "Content-type": "application/json",
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    if (response.data.statusCode === 403 || response.data.statusCode === 401) {
+      navigate("/login");
+    }
+    if (response.data.statusCode === 200) {
+      setStudents(response.data.data);
+    }
+  };
+
+  const toggleShow = (index) => {
+    if (index >= 0) {
+      setStudentIndex(index);
+    }
     setshowDialog(!showDialog);
   };
   return (
@@ -18,7 +45,7 @@ const Home = () => {
                 Name
               </th>
               <th className=" p-3 text-base font-semibold tracking-wide text-left">
-                Gender
+                Address
               </th>
               <th className=" p-3 text-base font-semibold tracking-wide text-left">
                 Email
@@ -32,73 +59,48 @@ const Home = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            <tr className="bg-white h-16">
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Student 1
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Male
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                abc@gmail.com
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                123456789
-              </td>
-              <td onClick={toggleShow}>
-                <button className="px-3 py-2 text-sm  whitespace-nowrap bg-blue-400 rounded-xl text-white">
-                  View Courses
-                </button>
-              </td>
-            </tr>
-            <tr className="bg-[#f1f9f7] h-16">
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Student 2
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Male
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                abc@gmail.com
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                123456789
-              </td>
-              <td>
-                <button className="px-3 py-2 text-sm  whitespace-nowrap bg-blue-400 rounded-xl text-white">
-                  View Courses
-                </button>
-              </td>
-            </tr>
-            <tr className="bg-white h-16">
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Student 3
-              </td>
-              {/* <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                C++, Science, History
-              </td> */}
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                Male
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                abc@gmail.com
-              </td>
-              <td className="p-3 text-base text-gray-700 whitespace-nowrap">
-                123456789
-              </td>
-              <td>
-                <button className="px-3 py-2 text-sm  whitespace-nowrap bg-blue-400 rounded-xl text-white">
-                  View Courses
-                </button>
-              </td>
-            </tr>
+            {students.map((student, index) => (
+              <tr
+                className={`${
+                  (index + 1) % 2 === 0 ? "bg-[#f1f9f7]" : "bg-white"
+                } h-16`}
+                key={student._id}
+              >
+                <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                  {student.name}
+                </td>
+                <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                  {student.address}
+                </td>
+                <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                  {student.email}
+                </td>
+                <td className="p-3 text-base text-gray-700 whitespace-nowrap">
+                  {student.phoneNo}
+                </td>
+                <td>
+                  <button
+                    onClick={() => toggleShow(index)}
+                    className="px-3 py-2 text-sm  whitespace-nowrap bg-blue-400 rounded-xl text-white"
+                  >
+                    View Courses
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
       {/* Dialog  */}
-
-      {showDialog && <Dialog toggle={toggleShow} />}
+      {showDialog && (
+        <Dialog
+          toggle={toggleShow}
+          courses={students[studentIndex].courses}
+          id={students[studentIndex]._id}
+          name={students[studentIndex].name}
+        />
+      )}
     </div>
   );
 };

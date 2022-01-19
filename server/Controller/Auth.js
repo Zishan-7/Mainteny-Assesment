@@ -41,7 +41,11 @@ module.exports.register = async (req, res) => {
     user.token = token;
 
     // return new user
-    res.status(201).json(user);
+    return res.status(201).json({
+      statusCode: 201,
+      msg: "Admin Created",
+      data: user,
+    });
   } catch (err) {
     console.log(err);
   }
@@ -73,10 +77,29 @@ module.exports.login = async (req, res) => {
       user.token = token;
 
       // user
-      res.status(200).json(user);
+      return res.status(200).send({
+        statusCode: 200,
+        data: user,
+      });
     }
-    res.status(400).send("Invalid Credentials");
+    return res.status(400).send("Invalid Credentials");
   } catch (err) {
     console.log(err);
+  }
+};
+
+module.exports.logout = async (req, res) => {
+  try {
+    await model.Admin.findOneAndUpdate({ _id: req.body.id }, { token: "" });
+
+    return res.status(200).send({
+      statusCode: 200,
+      msg: "Logout Successful",
+    });
+  } catch (error) {
+    return res.status(200).send({
+      statusCode: 400,
+      msg: "Some Error occured",
+    });
   }
 };
