@@ -60,7 +60,7 @@ const Dialog = (props) => {
       className={`fixed  inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full`}
       id="my-modal"
     >
-      <div className="relative top-20 mx-auto p-5 border w-5/12 shadow-lg rounded-md bg-white">
+      <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-8/12 lg:w-5/12 shadow-lg rounded-md bg-white">
         <p
           onClick={props.toggle}
           className="w-full text-right underline cursor-pointer"

@@ -15,7 +15,7 @@ const Topbar = () => {
   };
   return (
     <div className="h-14 border-b-2 flex items-center justify-around">
-      <h1 className="text-2xl font-bold">Cool University</h1>
+      <h1 className="text-2xl font-bold">Mainteny University</h1>
       <p className="hidden md:flex text-xl font-medium">Welcome Admin!</p>
       <button
         onClick={login}
