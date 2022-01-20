@@ -105,3 +105,9 @@ Email : admin@gmail.com
 
 Password : 12345678
 ```
+
+### `For API Documentation, you can import the Postman Collection using`
+
+```
+https://www.getpostman.com/collections/9a6d9a469b5118ce6c0b
+```
