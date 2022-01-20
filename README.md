@@ -69,8 +69,6 @@ You will see in the console, server will start at localhost:3001
 <b>
 NOTE : You don't have to set up the database, the Mongo databse used is already hosted on MongoDB atlas, you can see the databse URL in the .env file present in the server folder (I know that it is not safe to commit env file to github but I had to do it to keep things simple for getting the webapp started)
 </b>
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
 <br>
 
