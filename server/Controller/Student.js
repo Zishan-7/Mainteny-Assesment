@@ -20,14 +20,50 @@ module.exports.addStudent = async (req, res, next) => {
 
 module.exports.getAllStudents = async (req, res, next) => {
   try {
-    const student = await model.Student.find();
+    const page = req.query.page;
+    const studentsPerPage = 5;
+    const student = await model.Student.find()
+      .skip(page * studentsPerPage - studentsPerPage)
+      .limit(studentsPerPage);
+
+    const count = await model.Student.countDocuments();
+    const totalPages = Math.ceil(count / studentsPerPage);
 
     return res.status(200).send({
       statusCode: 200,
       msg: "Students fetched Successfully",
       data: student,
+      totalPages,
     });
   } catch {
+    return res.status(200).send({
+      statusCode: 304,
+      msg: "Some error occured, Please try again",
+    });
+  }
+};
+
+module.exports.viewCourses = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const student = await model.Student.findOne({
+      _id: id,
+    });
+
+    if (!student) {
+      return res.status(200).send({
+        statusCode: 404,
+        msg: "Student not found",
+      });
+    }
+
+    return res.status(200).send({
+      statusCode: 200,
+      msg: "Courses fetched Successfully",
+      data: student.courses,
+    });
+  } catch (e) {
+    console.log(e);
     return res.status(200).send({
       statusCode: 304,
       msg: "Some error occured, Please try again",

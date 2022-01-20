@@ -1,8 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Dialog = (props) => {
-  const [courses, setCourses] = useState(props.courses);
+  useEffect(() => {
+    getCourses();
+  }, []);
+
+  const [courses, setCourses] = useState([]);
   const [course, setCourse] = useState("");
 
   const addCourse = async (e) => {
@@ -30,6 +34,24 @@ const Dialog = (props) => {
         },
       ]);
       setCourse("");
+    }
+  };
+
+  const getCourses = async () => {
+    console.log("hii");
+    const response = await axios.get(
+      `/api/v1/student/viewCourses/${props.id}`,
+      {
+        headers: {
+          "Content-type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
+
+    if (response.data.statusCode === 200) {
+      console.log(response.data.data);
+      setCourses(response.data.data);
     }
   };
 

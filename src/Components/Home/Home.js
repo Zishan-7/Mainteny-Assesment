@@ -4,27 +4,33 @@ import { useNavigate } from "react-router-dom";
 import Dialog from "../Dialog/Dialog";
 
 const Home = () => {
-  useEffect(() => {
-    getStudents();
-  }, []);
   const [showDialog, setshowDialog] = useState(false);
   const [students, setStudents] = useState([]);
   const [studentIndex, setStudentIndex] = useState(0);
+  const [totalPages, settotalPages] = useState(0);
+  const [currentPage, setcurrentPage] = useState(1);
 
+  useEffect(() => {
+    getStudents();
+  }, [currentPage]);
   const navigate = useNavigate();
 
   const getStudents = async () => {
-    const response = await axios.get("/api/v1/student/getAllStudents", {
-      headers: {
-        "Content-type": "application/json",
-        "x-access-token": localStorage.getItem("token"),
-      },
-    });
+    const response = await axios.get(
+      `/api/v1/student/getAllStudents?page=${currentPage}`,
+      {
+        headers: {
+          "Content-type": "application/json",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    );
     if (response.data.statusCode === 403 || response.data.statusCode === 401) {
       navigate("/login");
     }
     if (response.data.statusCode === 200) {
       setStudents(response.data.data);
+      settotalPages(response.data.totalPages);
     }
   };
 
@@ -92,11 +98,30 @@ const Home = () => {
         </table>
       </div>
 
+      <div className="w-11/12 mx-auto flex justify-end mt-5 space-x-12">
+        {currentPage !== 1 && (
+          <button
+            onClick={() => setcurrentPage(currentPage - 1)}
+            className="px-5 py-2 bg-green-500  rounded-lg text-white"
+          >
+            Previous Page
+          </button>
+        )}
+
+        {currentPage !== totalPages && (
+          <button
+            onClick={() => setcurrentPage(currentPage + 1)}
+            className="px-5 py-2 bg-green-500  rounded-lg text-white"
+          >
+            Next Page
+          </button>
+        )}
+      </div>
+
       {/* Dialog  */}
       {showDialog && (
         <Dialog
           toggle={toggleShow}
-          courses={students[studentIndex].courses}
           id={students[studentIndex]._id}
           name={students[studentIndex].name}
         />

@@ -1,9 +1,9 @@
 const router = require("express").Router();
 
 const AuthRoutes = require("./Auth");
-const StudentAuth = require("./Student");
+const Student = require("./Student");
 
 router.use("/auth", AuthRoutes);
-router.use("/student", StudentAuth);
+router.use("/student", Student);
 
 module.exports = router;
